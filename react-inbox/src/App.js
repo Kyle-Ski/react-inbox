@@ -27,6 +27,48 @@ class App extends Component {
     })
   }
     
+  markAsStared = async (e) => {
+    var data = {
+      messageIds: [e.target.id],
+      command: 'star',
+      starred: true
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const patched = await response.json()
+    console.log('returned from post', patched)
+    this.setState({
+      messages: patched
+    })
+  }
+
+  markAsUnstared = async (e) => {
+    var data = {
+      messageIds: [e.target.id],
+      command: 'star',
+      starred: false
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const patched = await response.json()
+    console.log('returned from post', patched)
+    this.setState({
+      messages: patched
+    })
+  }
+
   markAsRead = async (e) => {
     console.log(e.target.value)
     var data = {
@@ -85,6 +127,8 @@ class App extends Component {
           isChecked={this.state.isChecked}
           markAsRead={this.markAsRead}
           markAsUnread={this.markAsUnread}
+          markAsStared={this.markAsStared}
+          markAsUnstared={this.markAsUnstared}
         />
       </div>
     );

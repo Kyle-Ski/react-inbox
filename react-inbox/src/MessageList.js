@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MessageList = ({messages, checkReadStatus, markAsRead, markAsUnread}) => {
+const MessageList = ({messages, checkReadStatus, markAsRead, markAsUnread, markAsUnstared, markAsStared}) => {
     
     const loadMessages = (list) => {
         return list.map((message,i) => {
@@ -16,7 +16,7 @@ const MessageList = ({messages, checkReadStatus, markAsRead, markAsUnread}) => {
                                 <input name="checkbox" type="checkbox" checked={isChecked} onChange={message.read ? markAsRead : markAsUnread} value={message.id}/>
                             </div>
                             <div className="col-xs-2">
-                                <i className={`star fa fa-star${isStared}`}></i>
+                                <i id={message.id} onClick={message.starred ? markAsUnstared : markAsStared} className={`star fa fa-star${isStared}`}></i>
                             </div>
                         </div>
                     </div>
