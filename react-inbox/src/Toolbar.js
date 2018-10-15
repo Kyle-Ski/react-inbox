@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ToolBar = ({markAsRead, markAsUnread}) => {
+const ToolBar = ({markAsRead, markAsUnread, checkAll}) => {
     return (
         <div className="row toolbar">
             <div className="col-md-12">
@@ -9,7 +9,7 @@ const ToolBar = ({markAsRead, markAsUnread}) => {
                     unread messages
                 </p>
 
-                <button className="btn btn-default">
+                <button onClick={checkAll} className="btn btn-default">
                 <i className="fa fa-minus-square-o"></i>
                 </button>
 

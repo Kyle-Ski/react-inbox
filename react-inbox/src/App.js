@@ -76,6 +76,11 @@ class App extends Component {
     })
   }
 
+  checkAll = (e) => {
+    e.preventDefault()
+    console.log('check all')
+  }
+
   markAsRead = async (e) => {
     e.preventDefault()
     var data = {
@@ -127,6 +132,7 @@ class App extends Component {
           markAsRead={this.markAsRead}
           markAsUnread={this.markAsUnread}
           checkedItems={this.checkedItems}
+          checkAll={this.checkAll}
         />
         <MessageList 
           messages={this.state.messages}
