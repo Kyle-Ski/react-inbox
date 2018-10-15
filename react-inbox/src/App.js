@@ -17,11 +17,6 @@ class App extends Component {
     const response = await fetch('http://localhost:8082/api/messages')
     const messages = await response.json()
     console.table(messages)
-    const checkBox = messages.map((item, i) =>{
-      let obj = {}
-      obj[item.id] = item.read
-      return obj
-    })
     this.setState({
       messages: messages,
     })
@@ -33,7 +28,6 @@ class App extends Component {
 
   handleCheck = (e) => {
     let checkedItem = this.state.messages.filter(message => message.id === Number(e.target.value))
-    console.log('checkedItem',checkedItem[0].id)
     let index = this.state.checkedItems.indexOf(checkedItem[0].id)
     if(!(this.state.checkedItems.includes(checkedItem[0].id))){
       this.setState({checkedItems: this.state.checkedItems.concat(checkedItem[0].id)})
@@ -83,8 +77,9 @@ class App extends Component {
   }
 
   markAsRead = async (e) => {
+    e.preventDefault()
     var data = {
-      messageIds: [e.target.value],
+      messageIds: this.state.checkedItems,
       command: 'read',
       read: false
     }
@@ -103,8 +98,9 @@ class App extends Component {
   }
 
   markAsUnread = async (e) => {
+    e.preventDefault()
     var data = {
-      messageIds: [e.target.value],
+      messageIds: this.state.checkedItems,
       command: 'read',
       read: true
     }
@@ -127,13 +123,15 @@ class App extends Component {
 
     return (
       <div className="App">
-        <ToolBar />
+        <ToolBar 
+          markAsRead={this.markAsRead}
+          markAsUnread={this.markAsUnread}
+          checkedItems={this.checkedItems}
+        />
         <MessageList 
           messages={this.state.messages}
           checkReadStatus={this.checkReadStatus}
           checkedItems={this.state.checkedItems}
-          markAsRead={this.markAsRead}
-          markAsUnread={this.markAsUnread}
           markAsStared={this.markAsStared}
           markAsUnstared={this.markAsUnstared}
           handleCheck={this.handleCheck}
