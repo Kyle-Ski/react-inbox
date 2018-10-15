@@ -23,10 +23,22 @@ class App extends Component {
     })
     this.setState({
       messages: messages,
-      isChecked: checkBox
+      checkedItems: [],
+      removedItems: []
     })
   }
     
+  handleCheck = (e) => {
+    let checkedItem = this.state.messages.filter(message => message.id === Number(e.target.value))
+    console.log('checkedItem',checkedItem[0].id)
+    let index = this.state.checkedItems.indexOf(checkedItem[0].id)
+    if(!(this.state.checkedItems.includes(checkedItem[0].id))){
+      this.setState({checkedItems: this.state.checkedItems.concat(checkedItem[0].id)})
+    } else {
+      this.setState({removedItems: this.state.checkedItems.splice(index,1)})
+    }
+  }
+
   markAsStared = async (e) => {
     var data = {
       messageIds: [e.target.id],
@@ -42,7 +54,6 @@ class App extends Component {
       }
     })
     const patched = await response.json()
-    console.log('returned from post', patched)
     this.setState({
       messages: patched
     })
@@ -63,14 +74,12 @@ class App extends Component {
       }
     })
     const patched = await response.json()
-    console.log('returned from post', patched)
     this.setState({
       messages: patched
     })
   }
 
   markAsRead = async (e) => {
-    console.log(e.target.value)
     var data = {
       messageIds: [e.target.value],
       command: 'read',
@@ -85,14 +94,12 @@ class App extends Component {
       }
     })
     const patched = await response.json()
-    console.log('returned from post', patched)
     this.setState({
       messages: patched
     })
   }
 
   markAsUnread = async (e) => {
-    console.log(e.target.value)
     var data = {
       messageIds: [e.target.value],
       command: 'read',
@@ -107,28 +114,26 @@ class App extends Component {
       }
     })
     const patched = await response.json()
-    console.log('returned from post', patched)
     this.setState({
       messages: patched
     })
   }
 
-  checkReadStatus = (e) =>{
-    console.log(e.target.value)
-  }
 
   render() {
+
     return (
       <div className="App">
         <ToolBar />
         <MessageList 
           messages={this.state.messages}
           checkReadStatus={this.checkReadStatus}
-          isChecked={this.state.isChecked}
+          checkedItems={this.state.checkedItems}
           markAsRead={this.markAsRead}
           markAsUnread={this.markAsUnread}
           markAsStared={this.markAsStared}
           markAsUnstared={this.markAsUnstared}
+          handleCheck={this.handleCheck}
         />
       </div>
     );
