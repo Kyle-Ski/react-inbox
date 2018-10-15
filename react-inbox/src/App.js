@@ -8,8 +8,9 @@ class App extends Component {
 
   state = {
     messages: [],
-    isChecked: []
-
+    isChecked: [],
+    checkedItems: [],
+    removedItems: []
   }
 
   async componentDidMount() {
@@ -23,11 +24,13 @@ class App extends Component {
     })
     this.setState({
       messages: messages,
-      checkedItems: [],
-      removedItems: []
     })
   }
     
+  isChecked = (e) => {
+    return this.state.checkedItems.includes(e.value.id) ? 'checked': 'unchecked'
+  }
+
   handleCheck = (e) => {
     let checkedItem = this.state.messages.filter(message => message.id === Number(e.target.value))
     console.log('checkedItem',checkedItem[0].id)
