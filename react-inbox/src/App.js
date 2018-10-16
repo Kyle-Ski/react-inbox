@@ -8,9 +8,10 @@ class App extends Component {
 
   state = {
     messages: [],
-    isChecked: [],
     checkedItems: [],
-    removedItems: []
+    removedItems: [],
+    addLable: [],
+    removeLable: []
   }
 
   async componentDidMount() {
@@ -30,9 +31,9 @@ class App extends Component {
     let checkedItem = this.state.messages.filter(message => message.id === Number(e.target.value))
     let index = this.state.checkedItems.indexOf(checkedItem[0].id)
     if(!(this.state.checkedItems.includes(checkedItem[0].id))){
-      this.setState({checkedItems: this.state.checkedItems.concat(checkedItem[0].id)})
+        this.setState({checkedItems: this.state.checkedItems.concat(checkedItem[0].id)})
     } else {
-      this.setState({removedItems: this.state.checkedItems.splice(index,1)})
+        this.setState({removedItems: this.state.checkedItems.splice(index,1)})
     }
   }
 
@@ -76,9 +77,27 @@ class App extends Component {
     })
   }
 
+  addLable = (e) => {
+    console.log(e.target.value)
+    this.setState({addLable: e.target.value})
+  }
+
+  removeLable = (e) => {
+    this.setState({removeLable: e.target.value})
+  }
+
   checkAll = (e) => {
     e.preventDefault()
-    console.log('check all')
+    let messageIds = this.state.messages.map(message => message.id)
+    let notIncludedIds = this.state.messages.filter(message => !(this.state.checkedItems.includes(message.id)))
+    let idsToAdd = notIncludedIds.map(item => item.id)
+    let lables = this.state.messages.filter(message => message.labels.length !== 0).map(message => message.labels)
+    console.log(this.state.checkedItems.splice(0, this.state.checkedItems.length))
+    if(this.state.checkedItems.length === this.state.messages.length){
+      this.setState({checkedItems: this.state.checkedItems.splice(0, this.state.checkedItems.length)})
+    } else if(!(this.state.checkedItems.includes(messageIds))) {
+      this.setState({checkedItems: this.state.checkedItems.concat(idsToAdd)})
+    }
   }
 
   markAsRead = async (e) => {
@@ -126,6 +145,7 @@ class App extends Component {
 
   render() {
 
+
     return (
       <div className="App">
         <ToolBar 
@@ -133,6 +153,8 @@ class App extends Component {
           markAsUnread={this.markAsUnread}
           checkedItems={this.checkedItems}
           checkAll={this.checkAll}
+          addLable={this.addLable}
+          removeLable={this.removeLable}
         />
         <MessageList 
           messages={this.state.messages}
@@ -141,6 +163,7 @@ class App extends Component {
           markAsStared={this.markAsStared}
           markAsUnstared={this.markAsUnstared}
           handleCheck={this.handleCheck}
+          handleDopdown={this.handleDopdown}
         />
       </div>
     );

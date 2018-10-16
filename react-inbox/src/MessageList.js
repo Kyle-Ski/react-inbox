@@ -1,12 +1,13 @@
 import React from 'react';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChecked, checkedItems}) => {
-    
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChecked, checkedItems, handleDropdown}) => {
+
     const loadMessages = (list) => {
         return list.map((message,i) => {
             let isRead = message.read ? 'unread':'read'
-            let isStared = message.starred ? '-o':''
+            let isStared = message.starred ? '':'-o'
             let checkedStyle = checkedItems.includes(message.id) ? 'selected' : ''
+            
             return (
                 <div key={i} className={`row message ${isRead} ${checkedStyle}`}>
                     <div className="col-xs-1">
@@ -20,6 +21,8 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChe
                         </div>
                     </div>
                     <div className="col-xs-11">
+                        <span className='label label-warning'>{''}</span>
+                        <span className='label label-warning'>{''}</span>
                         <a href="https://www.google.com">
                             {message.subject}
                         </a>
