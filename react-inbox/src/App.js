@@ -11,7 +11,8 @@ class App extends Component {
     checkedItems: [],
     removedItems: [],
     addLable: [],
-    removeLable: []
+    removeLable: [],
+    isClicked: false
   }
 
   async componentDidMount() {
@@ -23,8 +24,16 @@ class App extends Component {
     })
   }
     
+  changeClick = (e) => {
+    e.preventDefault()
+    this.setState({isClicked: !(this.state.isClicked)})
+    console.log('click dammit')
+}
+
+
   isChecked = (e) => {
-    return this.state.checkedItems.includes(e.value.id) ? 'checked': 'unchecked'
+    console.log(e.target.value)
+    return this.state.checkedItems.includes(e.target.value) ? false: true
   }
 
   handleCheck = (e) => {
@@ -91,10 +100,8 @@ class App extends Component {
     let messageIds = this.state.messages.map(message => message.id)
     let notIncludedIds = this.state.messages.filter(message => !(this.state.checkedItems.includes(message.id)))
     let idsToAdd = notIncludedIds.map(item => item.id)
-    let lables = this.state.messages.filter(message => message.labels.length !== 0).map(message => message.labels)
-    console.log(this.state.checkedItems.splice(0, this.state.checkedItems.length))
     if(this.state.checkedItems.length === this.state.messages.length){
-      this.setState({checkedItems: this.state.checkedItems.splice(0, this.state.checkedItems.length)})
+      this.setState({checkedItems: []})
     } else if(!(this.state.checkedItems.includes(messageIds))) {
       this.setState({checkedItems: this.state.checkedItems.concat(idsToAdd)})
     }
@@ -157,6 +164,7 @@ class App extends Component {
           removeLable={this.removeLable}
         />
         <MessageList 
+          isChecked={this.isChecked}
           messages={this.state.messages}
           checkReadStatus={this.checkReadStatus}
           checkedItems={this.state.checkedItems}
@@ -164,6 +172,8 @@ class App extends Component {
           markAsUnstared={this.markAsUnstared}
           handleCheck={this.handleCheck}
           handleDopdown={this.handleDopdown}
+          isClicked={this.changeClick}
+          expand={this.state.isClicked}
         />
       </div>
     );
