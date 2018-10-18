@@ -1,21 +1,22 @@
 import React from 'react';
 
-const ToolBar = ({messages, markAsRead, markAsUnread, checkAll, removeLable, checkedItems, putThatLabelOn}) => {
+const ToolBar = ({changeClick, messages, markAsRead, markAsUnread, checkAll, checkedItems, putThatLabelOn, takeThatLabelOff, isClicked}) => {
 
     const addLable = (e) => {
+        if (e.target.value !== 'Apply label'){
         e.preventDefault()
-        console.log('value',e.target.value)
         let checkedMessages = messages.filter(message => checkedItems.includes(message.id))
-        //^^ use this to patch eventually
-        //need to find messages that dont have lable you select
-        // use ^^^this and assign it conditionally, will be the array of messages to lable
         let doesNotHaveLabel = checkedMessages.filter(item => !(item.labels.includes(e.target.value)))
         let itemIdsToLabel = doesNotHaveLabel.map(item => item.id)
-        console.log('the ids that dont have the lable', itemIdsToLabel)
-        console.log('does not have lable',doesNotHaveLabel)
-        console.log('checked Items lables', checkedMessages)
-        //eventulaly direct this to PATCH in app.js with a function(lable, array of messages)
         putThatLabelOn(e.target.value, itemIdsToLabel)
+        }
+    }
+    const removeLable = (e) => {
+        e.preventDefault()
+        let checkedMessages = messages.filter(message => checkedItems.includes(message.id))
+        let doesNotHaveLabel = checkedMessages.filter(item => (item.labels.includes(e.target.value)))
+        let itemIdsToLabel = doesNotHaveLabel.map(item => item.id)
+        takeThatLabelOff(e.target.value, itemIdsToLabel)
     }
     const unreadMessages = (list) => {
         let unread = list.filter(item => item.read).length
@@ -40,7 +41,9 @@ const ToolBar = ({messages, markAsRead, markAsUnread, checkAll, removeLable, che
         <div className="row toolbar">
             <div className="col-md-12">
                     {unreadMessages(messages)}
-                    
+                    <a onClick={changeClick} className="btn btn-danger">
+                        <i className={`fa ${isClicked ?'fa-minus' : 'fa-plus'}`}></i>
+                    </a>
                 <button onClick={checkAll} className="btn btn-default">
                 <i className="fa fa-minus-square-o"></i>
                 </button>

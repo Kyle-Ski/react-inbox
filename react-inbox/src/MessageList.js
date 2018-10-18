@@ -1,14 +1,6 @@
 import React from 'react';
-import Message from './Message';
-import Lables from './Lables';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChecked, checkedItems, isClicked, lableToAdd, lableToRemove}) => {
-
-    const addLabel = () => {
-        return (
-            <span class="label label-warning">{lableToAdd}</span>
-        )
-    }
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems, lableToAdd, lableToRemove}) => {
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -38,14 +30,19 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChe
                         </div>
                     </div>
                     <div className="col-xs-11">
-                    {selected(id) && <span className="label label-warning">{lableToAdd}</span>}
-                        {/* {selected(id) && <Lables lableToAdd={lableToAdd} lableToRemove={lableToRemove} />} */}
+                    <span class="label label-warning">{message.labels[0]}</span>
+                    <span class="label label-warning">{message.labels[1]}</span>
+                    <span class="label label-warning">{message.labels[2]}</span>
                         <a href="https://www.google.com">
                             {message.subject}
                         </a>
                     </div>
                 </div>
-                {/* {expand && <Message MessageList={messages}/>} */}
+                <div class={`row message-body hidden`}>
+                    <div class="col-xs-11 col-xs-offset-1">
+                        {message.body}
+                    </div>
+                    </div>
                 </div>
             )
         })

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import ToolBar from './Toolbar';
 import MessageList from './MessageList';
-
+import Message from './Message';
 
 class App extends Component {
 
@@ -12,7 +12,9 @@ class App extends Component {
     removedItems: [],
     addLable: [],
     removeLable: [],
-    isClicked: false
+    isClicked: false,
+    subject: '',
+    body: ''
   }
 
   async componentDidMount() {
@@ -24,11 +26,46 @@ class App extends Component {
     })
   }
     
+  submit = (e) => {
+    e.preventDefault()
+    console.log('yo im the submit button')
+  }
+
+  getSubject = (e) => {
+    this.setState({subject: e.target.value})
+  }
+
+  getBody = (e) => {
+    this.setState({body: e.target.value})
+  }
+
+  takeThatLabelOff = async (label, array) => {
+    if (label !== 'Apply label'){
+      let data = {
+        messageIds: array,
+        command: 'removeLabel',
+        label: label
+      }
+      const response = await fetch('http://localhost:8082/api/messages', {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }
+      })
+      const patched = await response.json()
+      this.setState({
+        messages: patched
+      })
+    }
+  }
+
   putThatLabelOn = async (lable, array) => {
     let data = {
       messageIds: array,
       command: 'addLabel',
-      labels: lable
+      label: lable
     }
     const response = await fetch('http://localhost:8082/api/messages', {
       method: 'PATCH',
@@ -180,6 +217,15 @@ class App extends Component {
           removeLable={this.removeLable}
           messages={this.state.messages}
           putThatLabelOn={this.putThatLabelOn}
+          takeThatLabelOff={this.takeThatLabelOff}
+          changeClick={this.changeClick}
+          isClicked={this.state.isClicked}
+        />
+        <Message 
+          isClicked={this.state.isClicked}
+          getSubject={this.getSubject}
+          getBody={this.getBody}
+          submit={this.submit}
         />
         <MessageList 
           isChecked={this.isChecked}
@@ -190,7 +236,6 @@ class App extends Component {
           markAsUnstared={this.markAsUnstared}
           handleCheck={this.handleCheck}
           handleDopdown={this.handleDopdown}
-          isClicked={this.changeClick}
           expand={this.state.isClicked}
           lableToAdd={this.state.addLable}
           lableToRemove={this.state.removeLable}
