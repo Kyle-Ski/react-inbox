@@ -11,8 +11,6 @@ class App extends Component {
     messages: [],
     checkedItems: [],
     removedItems: [],
-    addLable: [],
-    removeLable: [],
     isClicked: false,
     subject: '',
     body: '',
@@ -264,15 +262,11 @@ class App extends Component {
         />
         <MessageList 
           messages={this.state.messages}
-          checkReadStatus={this.checkReadStatus}
           checkedItems={this.state.checkedItems}
           markAsStared={this.markAsStared}
           markAsUnstared={this.markAsUnstared}
           handleCheck={this.handleCheck}
-          handleDopdown={this.handleDopdown}
           expand={this.state.isClicked}
-          lableToAdd={this.state.addLable}
-          lableToRemove={this.state.removeLable}
         />
       </div>
     );
