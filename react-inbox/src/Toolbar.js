@@ -1,6 +1,16 @@
 import React from 'react';
 
-const ToolBar = ({changeClick, messages, markAsRead, markAsUnread, checkAll, checkedItems, putThatLabelOn, takeThatLabelOff, isClicked}) => {
+const ToolBar = ({deleteThis, changeClick, messages, markAsRead, markAsUnread, checkAll, checkedItems, putThatLabelOn, takeThatLabelOff, isClicked}) => {
+
+    const toDelete = (e) => {
+        if (e.target.value !== 'Apply label'){
+        e.preventDefault()
+        let checkedMessages = messages.filter(message => checkedItems.includes(message.id))
+        let itemIdsToDelete = checkedMessages.map(item => item.id)
+        deleteThis(itemIdsToDelete)
+        }
+    }
+
 
     const addLable = (e) => {
         if (e.target.value !== 'Apply label'){
@@ -18,29 +28,29 @@ const ToolBar = ({changeClick, messages, markAsRead, markAsUnread, checkAll, che
         let itemIdsToLabel = doesNotHaveLabel.map(item => item.id)
         takeThatLabelOff(e.target.value, itemIdsToLabel)
     }
-    const unreadMessages = (list) => {
-        let unread = list.filter(item => item.read).length
-        if (unread !== 0){
-            return (
-                <p className="pull-right">
-                <span className="badge badge">{unread}</span>
-                unread messages
-                </p>
-            )
-        } else {
-            return (
-                <p className="pull-right">
-                <span className="badge badge">{unread}</span>
-                no unread messages
-                </p>
-            )
-        }
-    }
+    // const unreadMessages = (list) => {
+    //     let unread = list.filter(item => item.read).length
+    //     if (unread !== 0){
+    //         return (
+    //             <p className="pull-right">
+    //             <span className="badge badge">{unread}</span>
+    //             unread messages
+    //             </p>
+    //         )
+    //     } else {
+    //         return (
+    //             <p className="pull-right">
+    //             <span className="badge badge">{unread}</span>
+    //             no unread messages
+    //             </p>
+    //         )
+    //     }
+    // }
 
     return (
         <div className="row toolbar">
             <div className="col-md-12">
-                    {unreadMessages(messages)}
+                    {/* {unreadMessages(messages)} */}
                     <a onClick={changeClick} className="btn btn-danger">
                         <i className={`fa ${isClicked ?'fa-minus' : 'fa-plus'}`}></i>
                     </a>
@@ -70,7 +80,7 @@ const ToolBar = ({changeClick, messages, markAsRead, markAsUnread, checkAll, che
                     <option value="gschool">gschool</option>
                 </select>
 
-                <button className="btn btn-default">
+                <button onClick={toDelete} className="btn btn-default">
                 <i className="fa fa-trash-o"></i>
                 </button>
             </div>

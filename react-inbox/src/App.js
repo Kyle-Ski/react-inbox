@@ -7,6 +7,7 @@ import Message from './Message';
 class App extends Component {
 
   state = {
+    
     messages: [],
     checkedItems: [],
     removedItems: [],
@@ -26,9 +27,47 @@ class App extends Component {
     })
   }
     
-  submit = (e) => {
+  submit = async (e) => {
     e.preventDefault()
-    console.log('yo im the submit button')
+    let data = {
+      subject: this.state.subject,
+      body: this.state.body,
+      read: true,
+      starred: false,
+      labels: []
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const patched = await response.json()
+    this.setState({
+      messages: patched
+    })
+
+  }
+
+  deleteThis = async (array) => {
+    let data = {
+      messageIds: array,
+      command: 'delete'
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const patched = await response.json()
+    this.setState({
+      messages: patched
+    })
   }
 
   getSubject = (e) => {
@@ -84,14 +123,8 @@ class App extends Component {
   changeClick = (e) => {
     e.preventDefault()
     this.setState({isClicked: !(this.state.isClicked)})
-    console.log('click dammit')
 }
 
-
-  isChecked = (e) => {
-    console.log(e.target.value)
-    return this.state.checkedItems.includes(e.target.value) ? false: true
-  }
 
   handleCheck = (e) => {
     let checkedItem = this.state.messages.filter(message => message.id === Number(e.target.value))
@@ -220,6 +253,7 @@ class App extends Component {
           takeThatLabelOff={this.takeThatLabelOff}
           changeClick={this.changeClick}
           isClicked={this.state.isClicked}
+          deleteThis={this.deleteThis}
         />
         <Message 
           isClicked={this.state.isClicked}
@@ -228,7 +262,6 @@ class App extends Component {
           submit={this.submit}
         />
         <MessageList 
-          isChecked={this.isChecked}
           messages={this.state.messages}
           checkReadStatus={this.checkReadStatus}
           checkedItems={this.state.checkedItems}

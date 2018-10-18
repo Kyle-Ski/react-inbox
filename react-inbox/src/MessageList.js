@@ -30,16 +30,16 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                         </div>
                     </div>
                     <div className="col-xs-11">
-                    <span class="label label-warning">{message.labels[0]}</span>
-                    <span class="label label-warning">{message.labels[1]}</span>
-                    <span class="label label-warning">{message.labels[2]}</span>
+                    <span className="label label-warning">{message.labels[0]}</span>
+                    <span className="label label-warning">{message.labels[1]}</span>
+                    <span className="label label-warning">{message.labels[2]}</span>
                         <a href="https://www.google.com">
                             {message.subject}
                         </a>
                     </div>
                 </div>
-                <div class={`row message-body hidden`}>
-                    <div class="col-xs-11 col-xs-offset-1">
+                <div className={`row message-body hidden`}>
+                    <div className="col-xs-11 col-xs-offset-1">
                         {message.body}
                     </div>
                     </div>
