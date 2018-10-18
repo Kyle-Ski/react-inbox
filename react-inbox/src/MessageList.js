@@ -1,7 +1,14 @@
 import React from 'react';
 import Message from './Message';
+import Lables from './Lables';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChecked, checkedItems, isClicked, expand}) => {
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChecked, checkedItems, isClicked, lableToAdd, lableToRemove}) => {
+
+    const addLabel = () => {
+        return (
+            <span class="label label-warning">{lableToAdd}</span>
+        )
+    }
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -31,14 +38,14 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, isChe
                         </div>
                     </div>
                     <div className="col-xs-11">
-                        <span className='label label-warning'>{''}</span>
-                        <span className='label label-warning'>{''}</span>
-                        <div onClick={isClicked} >
+                    {selected(id) && <span className="label label-warning">{lableToAdd}</span>}
+                        {/* {selected(id) && <Lables lableToAdd={lableToAdd} lableToRemove={lableToRemove} />} */}
+                        <a href="https://www.google.com">
                             {message.subject}
-                        </div>
+                        </a>
                     </div>
                 </div>
-                {expand && <Message MessageList={messages}/>}
+                {/* {expand && <Message MessageList={messages}/>} */}
                 </div>
             )
         })

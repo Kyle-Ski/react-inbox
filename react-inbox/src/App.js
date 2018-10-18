@@ -24,6 +24,26 @@ class App extends Component {
     })
   }
     
+  putThatLabelOn = async (lable, array) => {
+    let data = {
+      messageIds: array,
+      command: 'addLabel',
+      labels: lable
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const patched = await response.json()
+    this.setState({
+      messages: patched
+    })
+  } 
+
   changeClick = (e) => {
     e.preventDefault()
     this.setState({isClicked: !(this.state.isClicked)})
@@ -86,10 +106,6 @@ class App extends Component {
     })
   }
 
-  addLable = (e) => {
-    console.log(e.target.value)
-    this.setState({addLable: e.target.value})
-  }
 
   removeLable = (e) => {
     this.setState({removeLable: e.target.value})
@@ -158,10 +174,12 @@ class App extends Component {
         <ToolBar 
           markAsRead={this.markAsRead}
           markAsUnread={this.markAsUnread}
-          checkedItems={this.checkedItems}
+          checkedItems={this.state.checkedItems}
           checkAll={this.checkAll}
           addLable={this.addLable}
           removeLable={this.removeLable}
+          messages={this.state.messages}
+          putThatLabelOn={this.putThatLabelOn}
         />
         <MessageList 
           isChecked={this.isChecked}
@@ -174,6 +192,8 @@ class App extends Component {
           handleDopdown={this.handleDopdown}
           isClicked={this.changeClick}
           expand={this.state.isClicked}
+          lableToAdd={this.state.addLable}
+          lableToRemove={this.state.removeLable}
         />
       </div>
     );
