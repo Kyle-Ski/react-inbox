@@ -15,7 +15,8 @@ class App extends Component {
     removeLable: [],
     isClicked: false,
     subject: '',
-    body: ''
+    body: '',
+    checkAllButton: false
   }
 
   async componentDidMount() {
@@ -191,6 +192,7 @@ class App extends Component {
     } else if(!(this.state.checkedItems.includes(messageIds))) {
       this.setState({checkedItems: this.state.checkedItems.concat(idsToAdd)})
     }
+    this.setState({checkAllButton: !(this.state.checkAllButton)})
   }
 
   markAsRead = async (e) => {
@@ -235,9 +237,7 @@ class App extends Component {
     })
   }
 
-
   render() {
-
 
     return (
       <div className="App">
@@ -254,6 +254,7 @@ class App extends Component {
           changeClick={this.changeClick}
           isClicked={this.state.isClicked}
           deleteThis={this.deleteThis}
+          checkAllButton={this.state.checkAllButton}
         />
         <Message 
           isClicked={this.state.isClicked}
