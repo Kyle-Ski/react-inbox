@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems, lableToAdd, lableToRemove}) => {
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems}) => {
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -10,6 +10,10 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
         }
     }
 
+    const expandMessage = (e) => {
+        console.log(e.target.innerText )
+    }
+
     const loadMessages = (list) => {
         return list.map((message,i) => {
             let isRead = message.read ? 'unread':'read'
@@ -17,8 +21,8 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
             let checkedStyle = checkedItems.includes(message.id) ? 'selected' : ''
             let id = message.id
             return (
-                <div key={i}>
-                <div className={`row message ${isRead} ${checkedStyle}`}>
+                <div value={message.id} key={i}>
+                <div  onClick={expandMessage} className={`row message ${isRead} ${checkedStyle}`}>
                     <div className="col-xs-1">
                         <div className="row">
                             <div className="col-xs-2">
@@ -33,11 +37,11 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                     <span className="label label-warning">{message.labels[0]}</span>
                     <span className="label label-warning">{message.labels[1]}</span>
                     <span className="label label-warning">{message.labels[2]}</span>
-                        <a href="https://www.google.com">
+                        <a>
                             {message.subject}
                         </a>
                     </div>
-                </div>
+                </div> 
                 <div className={`row message-body hidden`}>
                     <div className="col-xs-11 col-xs-offset-1">
                         {message.body}
