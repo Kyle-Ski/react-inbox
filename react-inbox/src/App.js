@@ -45,7 +45,7 @@ class App extends Component {
     })
     const patched = await response.json()
     this.setState({
-      messages: patched
+      messages: [...this.state.messages, patched]
     })
 
   }
