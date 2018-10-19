@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems}) => {
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, expandMessage, expandMessageId, targetId}) => {
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -10,8 +10,14 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
         }
     }
 
-    const expandMessage = (e) => {
-        console.log(e.target.innerText )
+    const messageWasClicked = (e) => {
+        let clicked
+        if (expandMessageId.includes(Number(e))){
+            clicked = false
+        } else {
+            clicked = true
+        }
+        return clicked
     }
 
     const loadMessages = (list) => {
@@ -21,8 +27,8 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
             let checkedStyle = checkedItems.includes(message.id) ? 'selected' : ''
             let id = message.id
             return (
-                <div value={message.id} key={i}>
-                <div  onClick={expandMessage} className={`row message ${isRead} ${checkedStyle}`}>
+                <div key={i}>
+                <div id={id} className={`row clickable-row message ${isRead} ${checkedStyle}`}>
                     <div className="col-xs-1">
                         <div className="row">
                             <div className="col-xs-2">
@@ -33,16 +39,16 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                             </div>
                         </div>
                     </div>
-                    <div className="col-xs-11">
+                    <div id={id} className="col-xs-11">
                     <span className="label label-warning">{message.labels[0]}</span>
                     <span className="label label-warning">{message.labels[1]}</span>
                     <span className="label label-warning">{message.labels[2]}</span>
-                        <a>
+                        <a id={id} onClick={expandThatMessage}>
                             {message.subject}
                         </a>
                     </div>
                 </div> 
-                <div className={`row message-body hidden`}>
+                <div className={`row message-body ${messageWasClicked(targetId) ? 'hidden' : ''}`}>
                     <div className="col-xs-11 col-xs-offset-1">
                         {message.body}
                     </div>

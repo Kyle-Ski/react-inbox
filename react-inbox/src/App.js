@@ -14,7 +14,10 @@ class App extends Component {
     isClicked: false,
     subject: '',
     body: '',
-    checkAllButton: false
+    checkAllButton: false,
+    expandMessageId: [],
+    removeExpandMessageId: [],
+    targetId: null
   }
 
   async componentDidMount() {
@@ -29,6 +32,7 @@ class App extends Component {
   submit = async (e) => {
     e.preventDefault()
     let data = {
+      id: this.state.messages.length + 1,
       subject: this.state.subject,
       body: this.state.body,
       read: true,
@@ -49,6 +53,21 @@ class App extends Component {
     })
 
   }
+
+  expandThatMessage = (e) => {
+    let clickedMessage = this.state.messages.filter(item => item.id === Number(e.target.id))
+    let index = this.state.expandMessageId.indexOf(Number(e.target.id))
+    if(!(this.state.expandMessageId.includes(clickedMessage[0].id))){
+      this.setState({
+        expandMessageId: this.state.expandMessageId.concat(clickedMessage[0].id),
+      })
+    } else {
+      this.setState({
+        removeExpandMessageId: this.state.expandMessageId.splice(index, 1),
+      })
+    }
+    this.setState({targetId: e.target.id})
+}
 
   deleteThis = async (array) => {
     let data = {
@@ -267,6 +286,10 @@ class App extends Component {
           markAsUnstared={this.markAsUnstared}
           handleCheck={this.handleCheck}
           expand={this.state.isClicked}
+          expandMessage={this.state.expandMessage}
+          expandThatMessage={this.expandThatMessage}
+          expandMessageId={this.state.expandMessageId}
+          targetId={this.state.targetId}
         />
       </div>
     );
