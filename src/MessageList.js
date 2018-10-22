@@ -1,4 +1,5 @@
 import React from 'react';
+import MessageBody from './MessageBody';
 
 const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, expandMessageId, targetId}) => {
 
@@ -10,15 +11,6 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
         }
     }
 
-    const messageWasClicked = (e) => {
-        let clicked
-        if (expandMessageId.includes(Number(e))){
-            clicked = false
-        } else {
-            clicked = true
-        }
-        return clicked
-    }
 
     const loadMessages = (list) => {
         return list.map((message,i) => {
@@ -48,11 +40,10 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                         </a>
                     </div>
                 </div> 
-                <div className={`row message-body ${messageWasClicked(targetId) ? 'hidden' : ''}`}>
-                    <div className="col-xs-11 col-xs-offset-1">
-                        {message.body}
-                    </div>
-                    </div>
+                <MessageBody 
+                    messages={messages}
+                    expandMessageId={expandMessageId}
+                />
                 </div>
             )
         })
