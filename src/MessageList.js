@@ -1,7 +1,6 @@
 import React from 'react';
-import MessageBody from './MessageBody';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, expandMessageId, targetId}) => {
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, targetId}) => {
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -10,7 +9,6 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
             return false
         }
     }
-
 
     const loadMessages = (list) => {
         return list.map((message,i) => {
@@ -40,10 +38,11 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                         </a>
                     </div>
                 </div> 
-                <MessageBody 
-                    messages={messages}
-                    expandMessageId={expandMessageId}
-                />
+                <div className={`row message-body ${(message.id == targetId) ? '' : 'hidden'}`}>
+                    <div className="col-xs-11 col-xs-offset-1">
+                        {message.body}
+                    </div>
+                </div>
                 </div>
             )
         })

@@ -29,6 +29,29 @@ class App extends Component {
     })
   }
     
+
+  
+  makeThatPatch = async (command, lable, ids) => {
+    let data = {
+      messageIds: ids,
+      command: `${command}`,
+      label: lable
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const patched = await response.json()
+    this.setState({
+      messages: patched
+    })
+
+  }
+
   submit = async (e) => {
     e.preventDefault()
     let data = {
@@ -98,44 +121,12 @@ class App extends Component {
 
   takeThatLabelOff = async (label, array) => {
     if (label !== 'Apply label'){
-      let data = {
-        messageIds: array,
-        command: 'removeLabel',
-        label: label
-      }
-      const response = await fetch('http://localhost:8082/api/messages', {
-        method: 'PATCH',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        }
-      })
-      const patched = await response.json()
-      this.setState({
-        messages: patched
-      })
+      this.makeThatPatch('removeLabel', label, array)
     }
   }
 
-  putThatLabelOn = async (lable, array) => {
-    let data = {
-      messageIds: array,
-      command: 'addLabel',
-      label: lable
-    }
-    const response = await fetch('http://localhost:8082/api/messages', {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
-    })
-    const patched = await response.json()
-    this.setState({
-      messages: patched
-    })
+  putThatLabelOn = async (label, array) => {
+    this.makeThatPatch('addLabel', label, array)
   } 
 
   changeClick = (e) => {
@@ -155,43 +146,11 @@ class App extends Component {
   }
 
   markAsStared = async (e) => {
-    var data = {
-      messageIds: [e.target.id],
-      command: 'star',
-      starred: true
-    }
-    const response = await fetch('http://localhost:8082/api/messages', {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
-    })
-    const patched = await response.json()
-    this.setState({
-      messages: patched
-    })
+    this.makeThatPatch('star', true, [e.target.id])
   }
 
   markAsUnstared = async (e) => {
-    var data = {
-      messageIds: [e.target.id],
-      command: 'star',
-      starred: false
-    }
-    const response = await fetch('http://localhost:8082/api/messages', {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
-    })
-    const patched = await response.json()
-    this.setState({
-      messages: patched
-    })
+    this.makeThatPatch('star', false, [e.target.id])
   }
 
 
@@ -214,23 +173,7 @@ class App extends Component {
 
   markAsRead = async (e) => {
     e.preventDefault()
-    var data = {
-      messageIds: this.state.checkedItems,
-      command: 'read',
-      read: false
-    }
-    const response = await fetch('http://localhost:8082/api/messages', {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
-    })
-    const patched = await response.json()
-    this.setState({
-      messages: patched
-    })
+    this.makeThatPatch('read', false, this.state.checkedItems)
   }
 
   markAsUnread = async (e) => {
