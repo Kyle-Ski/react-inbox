@@ -17,7 +17,8 @@ class App extends Component {
     checkAllButton: false,
     expandMessageId: [],
     removeExpandMessageId: [],
-    targetId: null
+    targetId: null,
+    count: 0
   }
 
   async componentDidMount() {

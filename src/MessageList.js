@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, targetId}) => {
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems, expandThatMessage, targetId}) => {
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -8,6 +8,14 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
         } else {
             return false
         }
+    }
+
+    const expandYo = (id) => {
+        if(id == targetId){
+            return ''
+            } else {
+            return 'hidden'
+            }
     }
 
     const loadMessages = (list) => {
@@ -38,7 +46,7 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                         </a>
                     </div>
                 </div> 
-                <div className={`row message-body ${(message.id == targetId) ? '' : 'hidden'}`}>
+                <div className={`row message-body ${expandYo(id)}`}>
                     <div className="col-xs-11 col-xs-offset-1">
                         {message.body}
                     </div>
