@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, expandMessage, expandMessageId, targetId}) => {
+const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems,expandThatMessage, expandMessageId, targetId}) => {
 
     const selected = (id) => {
         if (checkedItems.includes(id)){
@@ -32,7 +32,7 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                     <div className="col-xs-1">
                         <div className="row">
                             <div className="col-xs-2">
-                                <input name="checkbox" type="checkbox" checked={selected(id)} onChange={handleCheck} value={message.id}/>
+                                <input className="checkbox" type="checkbox" checked={selected(id)} onChange={handleCheck} value={message.id}/>
                             </div>
                             <div className="col-xs-2">
                                 <i id={message.id} onClick={message.starred ? markAsUnstared : markAsStared} className={`star fa fa-star${isStared}`}></i>

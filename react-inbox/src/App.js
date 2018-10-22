@@ -35,7 +35,7 @@ class App extends Component {
       id: this.state.messages.length + 1,
       subject: this.state.subject,
       body: this.state.body,
-      read: true,
+      read: false,
       starred: false,
       labels: []
     }
