@@ -11,14 +11,6 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
         }
     }
 
-    const expandYo = (id) => {
-        if(id == targetId){
-            return ''
-            } else {
-            return 'hidden'
-            }
-    }
-
     const loadMessages = (list) => {
         return list.map((message,i) => {
             let isRead = message.read ? 'unread':'read'
@@ -37,7 +29,6 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
                     markAsUnstared={markAsUnstared}
                     checkedItems={checkedItems}
                     expandThatMessage={expandThatMessage}
-                    expandYo={expandYo}
                     selected={selected}
                 />
             )
