@@ -1,4 +1,5 @@
 import React from 'react';
+import SingleMessage from './SingleMessage';
 
 const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, checkedItems, expandThatMessage, targetId}) => {
 
@@ -25,33 +26,20 @@ const MessageList = ({messages, handleCheck, markAsUnstared, markAsStared, check
             let checkedStyle = checkedItems.includes(message.id) ? 'selected' : ''
             let id = message.id
             return (
-                <div key={i}>
-                <div id={id} className={`row clickable-row message ${isRead} ${checkedStyle}`}>
-                    <div className="col-xs-1">
-                        <div className="row">
-                            <div className="col-xs-2">
-                                <input className="checkbox" type="checkbox" checked={selected(id)} onChange={handleCheck} value={message.id}/>
-                            </div>
-                            <div className="col-xs-2">
-                                <i id={message.id} onClick={message.starred ? markAsUnstared : markAsStared} className={`star fa fa-star${isStared}`}></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div id={id} className="col-xs-11">
-                    <span className="label label-warning">{message.labels[0]}</span>
-                    <span className="label label-warning">{message.labels[1]}</span>
-                    <span className="label label-warning">{message.labels[2]}</span>
-                        <a id={id} onClick={expandThatMessage}>
-                            {message.subject}
-                        </a>
-                    </div>
-                </div> 
-                <div className={`row message-body ${expandYo(id)}`}>
-                    <div className="col-xs-11 col-xs-offset-1">
-                        {message.body}
-                    </div>
-                </div>
-                </div>
+                <SingleMessage key={i}
+                    message={message}
+                    isRead={isRead}
+                    isStared={isStared}
+                    checkedStyle={checkedStyle}
+                    id={id}
+                    handleCheck={handleCheck}
+                    markAsStared={markAsStared}
+                    markAsUnstared={markAsUnstared}
+                    checkedItems={checkedItems}
+                    expandThatMessage={expandThatMessage}
+                    expandYo={expandYo}
+                    selected={selected}
+                />
             )
         })
     }
