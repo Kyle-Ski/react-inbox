@@ -29,13 +29,21 @@ const ToolBar = ({deleteThis, changeClick, messages, markAsRead, markAsUnread, c
     }
     const unreadMessages = (list) => {
         let unread = list.filter(item => item.read).length
-        if (unread !== 0){
+        if (Number(unread) === 1){
+            return (
+                <p className="pull-right">
+                <span className="badge badge">{unread}</span>
+                unread message
+                </p>
+            )
+        } else if (unread !== 0){
             return (
                 <p className="pull-right">
                 <span className="badge badge">{unread}</span>
                 unread messages
                 </p>
             )
+        
         } else {
             return (
                 <p className="pull-right">
